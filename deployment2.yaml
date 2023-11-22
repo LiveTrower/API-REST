@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+         - name: mysql
+           image: mysql:latest
+           imagePullPolicy: Always
+           env:
+           - name: MYSQL_ROOT_PASSWORD
+             valueFrom:
+                secretKeyRef:
+                   name: fastapi-secrets
+                   key: db_root_password
+           ports:
+              - containerPort: 3306
+                name: db-container
+           volumeMounts:
+              - mountPath: /var/lib/mysql
+                name: mysql-persistent-storage
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim

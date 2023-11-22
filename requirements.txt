@@ -1,3 +1,3 @@
 fastapi[all]
 uvicorn
-sqlalchemy[sqlite]
+mysql-connector-python

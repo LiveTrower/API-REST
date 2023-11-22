@@ -11,8 +11,10 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
+COPY init.sql /docker-entrypoint-initdb.d/
+
 # Copia el contenido del directorio actual (tu aplicación) al contenedor
 COPY . /app
 
 # Comando para ejecutar la aplicación usando Uvicorn cuando el contenedor se inicie
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]

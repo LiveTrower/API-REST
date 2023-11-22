@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helados-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: helados-app
+  template:
+    metadata:
+      labels:
+        app: helados-app
+    spec:
+      containers:
+      - name: helados-app
+        image: livetrower/rest-api:v1
+        ports:
+        - containerPort: 80
+        env:
+           - name: db_root_password
+             valueFrom:
+                secretKeyRef:
+                  name: fastapi-secrets
+                  key: db_root_password
+           - name: db_name
+             value: helados_db
